@@ -3,6 +3,7 @@ package com.codepath.apps.TwitterClone;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class TimelineActivity extends AppCompatActivity {
     private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
     private RecyclerView rvTweets;
     private TweetsAdapter adapter = new TweetsAdapter(this, tweets);
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +34,17 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         client = TwitterApplication.getRestClient(this);
-         rvTweets = findViewById(R.id.rvTweets);
+        rvTweets = findViewById(R.id.rvTweets);
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
+        swipeContainer = findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.i(TAG, "fetching new data");
+                populateHomeTimeline();
+            }
+        });
         populateHomeTimeline();
     }
 
@@ -45,8 +55,9 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "success" + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
-                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
-                    adapter.notifyDataSetChanged();
+                    adapter.clear();
+                    adapter.addAll(Tweet.fromJsonArray(jsonArray));
+                    swipeContainer.setRefreshing(false);
                 } catch (JSONException e) {
                     Log.e(TAG, "JSON failed", e);
                 }
