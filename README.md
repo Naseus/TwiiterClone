@@ -2,9 +2,8 @@
 
 **Twitter Clone** is an android app that allows a user to view his Twitter timeline. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Time spent: **4** hours spent in total
 ## part 2
-Time spent: **X** hours spent in total
+Time spent: **4** hours spent in total
 
 ## User Stories
 
@@ -41,6 +40,9 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 While working on this section I had trouble whth my emulator so I switched to debuging on my phone
 ## Part 1
+
+Time spent: **4** hours spent in total
+
 ## User Stories
 
 The following **required** functionality is completed:
