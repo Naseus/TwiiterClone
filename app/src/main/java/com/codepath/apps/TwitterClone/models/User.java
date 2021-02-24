@@ -2,11 +2,16 @@ package com.codepath.apps.TwitterClone.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+@Parcel
 public class User {
     private String name;
     private String screenName;
     private String profileImageUrl;
+
+    // Fort parceler
+    public User(){}
 
     public User(JSONObject jsonObject) throws JSONException {
         name = jsonObject.getString("name");

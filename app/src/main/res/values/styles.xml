@@ -14,6 +14,12 @@
         <item name="background">@color/tweet_white</item>
         <item name="colorPrimary">@color/tweet_blue</item>
         <item name="android:textColor">@color/tweet_black</item>
+        <item name="colorControlActivated">@color/tweet_blue</item>
+    </style>
+
+    <style name="counterOveride">
+        <item name="colorControlActivated">@color/red</item>
+        <item name="android:textColor">@color/red</item>
     </style>
 
 </resources>
