@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.codepath.apps.TwitterClone.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +35,7 @@ public class TimelineActivity extends AppCompatActivity {
     private TwitterClient client;
     private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
     private RecyclerView rvTweets;
+    private FloatingActionButton fabCompose;
     private TweetsAdapter adapter = new TweetsAdapter(this, tweets);
     private SwipeRefreshLayout swipeContainer;
     private static final int REQUEST_CODE = 20;
@@ -44,6 +47,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         client = TwitterApplication.getRestClient(this);
         rvTweets = findViewById(R.id.rvTweets);
+        fabCompose = findViewById(R.id.fabCompose);
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
         swipeContainer = findViewById(R.id.swipeContainer);
@@ -52,6 +56,13 @@ public class TimelineActivity extends AppCompatActivity {
             public void onRefresh() {
                 Log.i(TAG, "fetching new data");
                 populateHomeTimeline();
+            }
+        });
+        fabCompose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent i = new Intent( TimelineActivity.this, ComposeActivity.class);
+                    startActivityForResult(i, REQUEST_CODE);
             }
         });
         populateHomeTimeline();
@@ -64,20 +75,11 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.Compose) {
-            Intent i = new Intent( TimelineActivity.this, ComposeActivity.class);
-            startActivityForResult(i, REQUEST_CODE);
-        }
-        return true;
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
-            tweets.add(0, tweet);
-            adapter.notifyItemInserted(0);
+            Log.i(TAG, "TWEET CONTENT: " + tweet.getBody());
+            adapter.add(tweet);
             rvTweets.smoothScrollToPosition(0);
         }
         super.onActivityResult(requestCode, resultCode, data);

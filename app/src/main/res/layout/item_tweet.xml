@@ -40,6 +40,9 @@
         android:layout_below="@+id/tvUser"
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:textColorLink="@color/tweet_blue"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="TextView" />
 </RelativeLayout>

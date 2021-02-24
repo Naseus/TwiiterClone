@@ -10,7 +10,7 @@ public class User {
     private String screenName;
     private String profileImageUrl;
 
-    // Fort parceler
+    // For parceler
     public User(){}
 
     public User(JSONObject jsonObject) throws JSONException {
